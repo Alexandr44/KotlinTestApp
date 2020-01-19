@@ -2,6 +2,7 @@ package com.alex44.kotlintestapp.di.modules
 
 import com.alex44.kotlintestapp.App
 import com.alex44.kotlintestapp.common.model.api.ApiStrings.Companion.RETROFIT_BASE_URL
+import com.alex44.kotlintestapp.model.api.IDataSource
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -51,5 +52,9 @@ class ApiModule {
             .addConverterFactory(GsonConverterFactory.create(gson))
             .client(okHttpClient)
             .build()
+
+    @Provides
+    fun dataSource(retrofit: Retrofit) : IDataSource = retrofit.create(
+        IDataSource::class.java)
 
 }

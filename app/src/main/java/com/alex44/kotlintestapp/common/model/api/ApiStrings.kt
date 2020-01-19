@@ -4,7 +4,7 @@ class ApiStrings {
 
     companion object {
 
-        val RETROFIT_BASE_URL = "http://kot3.com/xim/api.php"
+        val RETROFIT_BASE_URL = "http://kot3.com/xim/"
 
     }
 
