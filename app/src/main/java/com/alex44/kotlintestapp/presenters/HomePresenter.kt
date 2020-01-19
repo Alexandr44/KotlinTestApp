@@ -13,6 +13,6 @@ class HomePresenter : MvpPresenter<HomeView>() {
     }
 
     private fun init() {
-        viewState.initTabs()
+        viewState.init()
     }
 }

@@ -7,6 +7,6 @@ import com.arellomobile.mvp.viewstate.strategy.StateStrategyType
 @StateStrategyType(value = AddToEndSingleStrategy::class)
 interface HomeView : MvpView {
 
-    fun initTabs()
+    fun init()
 
 }
