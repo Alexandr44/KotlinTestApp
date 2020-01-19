@@ -6,9 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.alex44.kotlintestapp.App
 import com.alex44.kotlintestapp.model.enums.TabType
 import com.alex44.kotlintestapp.presenters.TabPresenter
+import com.alex44.kotlintestapp.ui.adapters.DataRvAdapter
 import com.alex44.kotlintestapp.views.TabView
 import com.arellomobile.mvp.MvpAppCompatFragment
 import com.arellomobile.mvp.presenter.InjectPresenter
@@ -25,6 +27,8 @@ class TabFragment : MvpAppCompatFragment(), TabView {
 
     @Inject
     lateinit var router: Router
+
+    var adapter : DataRvAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,11 +53,14 @@ class TabFragment : MvpAppCompatFragment(), TabView {
     }
 
     override fun initRV() {
-
+        adapter = DataRvAdapter(presenter)
+        App.instance.appComponent.inject(adapter as DataRvAdapter)
+        data_rv.layoutManager = LinearLayoutManager(context)
+        data_rv.adapter = adapter
     }
 
     override fun updateRV() {
-        text_view.text = presenter.data.size.toString()
+        adapter?.notifyDataSetChanged()
     }
 
     override fun goToDetails() {
