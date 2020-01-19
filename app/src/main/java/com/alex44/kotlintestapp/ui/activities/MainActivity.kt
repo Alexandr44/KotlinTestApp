@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.alex44.kotlintestapp.App
 import com.alex44.kotlintestapp.R
-import com.alex44.kotlintestapp.common.navigation.Screens
+import com.alex44.kotlintestapp.common.interfaces.BackButtonListener
 import com.alex44.kotlintestapp.presenters.MainPresenter
 import com.alex44.kotlintestapp.views.MainView
 import com.arellomobile.mvp.MvpAppCompatActivity
@@ -68,17 +68,19 @@ class MainActivity : MvpAppCompatActivity(), MainView {
     }
 
     override fun onBackPressed() {
-        alert {
-            title = "Выход"
-            message = "Вы действительно хотите выйти?"
-            positiveButton("Да") {router.exit()}
-            negativeButton("Нет") {it.dismiss()}
+        val fragment = supportFragmentManager.findFragmentById(R.id.main_frame_layout)
+        if (fragment is BackButtonListener && (fragment as BackButtonListener).backClick()) {
+            return
+        }
+        else {
+            alert {
+                title = "Выход"
+                message = "Вы действительно хотите выйти?"
+                positiveButton("Да") { super.onBackPressed() }
+                negativeButton("Нет") { it.dismiss() }
 
-        }.show()
-    }
-
-    override fun goToHomeScreen() {
-        router.newRootScreen(Screens.HomeScreen())
+            }.show()
+        }
     }
 
     override fun showMessage(message: String) {
