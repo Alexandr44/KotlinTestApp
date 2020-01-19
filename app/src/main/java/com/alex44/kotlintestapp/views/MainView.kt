@@ -9,4 +9,6 @@ interface MainView : MvpView {
 
     fun goToHomeScreen()
 
+    fun showMessage(message: String)
+
 }

@@ -1,6 +1,7 @@
 package com.alex44.kotlintestapp.ui.activities
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.alex44.kotlintestapp.App
@@ -11,6 +12,7 @@ import com.alex44.kotlintestapp.views.MainView
 import com.arellomobile.mvp.MvpAppCompatActivity
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
+import io.reactivex.android.schedulers.AndroidSchedulers
 import org.jetbrains.anko.alert
 import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.NavigatorHolder
@@ -30,7 +32,7 @@ class MainActivity : MvpAppCompatActivity(), MainView {
     @Inject
     lateinit var router: Router
 
-    var navigator: Navigator = object : SupportAppNavigator(this, R.id.main_frame_layout) {
+    private var navigator: Navigator = object : SupportAppNavigator(this, R.id.main_frame_layout) {
         override fun setupFragmentTransaction(command: Command?,
                                               currentFragment: Fragment?,
                                               nextFragment: Fragment?,
@@ -63,7 +65,11 @@ class MainActivity : MvpAppCompatActivity(), MainView {
     }
 
     @ProvidePresenter
-    fun createPresenter() : MainPresenter = MainPresenter()
+    fun createPresenter() : MainPresenter {
+        val presenter = MainPresenter(AndroidSchedulers.mainThread())
+        App.instance.appComponent.inject(presenter)
+        return presenter
+    }
 
     override fun onBackPressed() {
         alert {
@@ -77,6 +83,10 @@ class MainActivity : MvpAppCompatActivity(), MainView {
 
     override fun goToHomeScreen() {
         router.newRootScreen(Screens.HomeScreen())
+    }
+
+    override fun showMessage(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 
 }
