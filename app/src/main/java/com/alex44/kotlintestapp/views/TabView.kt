@@ -13,6 +13,4 @@ interface TabView : MvpView {
 
     fun updateRV()
 
-    fun goToDetails()
-
 }

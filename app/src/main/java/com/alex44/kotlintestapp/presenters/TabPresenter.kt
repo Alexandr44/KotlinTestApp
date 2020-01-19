@@ -1,5 +1,6 @@
 package com.alex44.kotlintestapp.presenters
 
+import com.alex44.kotlintestapp.common.navigation.Screens
 import com.alex44.kotlintestapp.model.dtos.DataDTO
 import com.alex44.kotlintestapp.model.enums.TabType
 import com.alex44.kotlintestapp.model.repo.IDataRepo
@@ -7,6 +8,7 @@ import com.alex44.kotlintestapp.ui.adapters.DataRvAdapter
 import com.alex44.kotlintestapp.views.TabView
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
+import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
 @InjectViewState
@@ -14,6 +16,9 @@ class TabPresenter(private val type : TabType) : MvpPresenter<TabView>() {
 
     @Inject
     lateinit var dataRepo : IDataRepo
+
+    @Inject
+    lateinit var router: Router
 
     var data = ArrayList<DataDTO>()
 
@@ -43,7 +48,13 @@ class TabPresenter(private val type : TabType) : MvpPresenter<TabView>() {
     }
 
     fun clicked(position: Int) {
-        viewState.showMessage("Clicked: $position")
+        val dto = data[position]
+        if (dto.title.isNullOrBlank() || dto.imgUrl.isNullOrBlank()) {
+            viewState.showMessage("Incorrect data")
+        }
+        else {
+            router.newRootScreen(Screens.DetailScreen(dto.title, dto.imgUrl))
+        }
     }
 
 }

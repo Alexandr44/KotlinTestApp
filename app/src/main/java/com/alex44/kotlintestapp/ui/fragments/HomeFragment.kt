@@ -55,9 +55,7 @@ class HomeFragment : MvpAppCompatFragment(), HomeView {
                     }
                 }
             }
-
             override fun onTabReselected(tab: TabLayout.Tab?) {}
-
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
         })
         home_tab_layout.addTab(home_tab_layout.newTab().setText("Cats"))

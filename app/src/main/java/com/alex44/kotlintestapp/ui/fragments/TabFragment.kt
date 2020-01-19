@@ -16,8 +16,6 @@ import com.arellomobile.mvp.MvpAppCompatFragment
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import kotlinx.android.synthetic.main.fragment_tab.*
-import ru.terrakok.cicerone.Router
-import javax.inject.Inject
 
 
 class TabFragment : MvpAppCompatFragment(), TabView {
@@ -25,10 +23,7 @@ class TabFragment : MvpAppCompatFragment(), TabView {
     @InjectPresenter
     lateinit var presenter: TabPresenter
 
-    @Inject
-    lateinit var router: Router
-
-    var adapter : DataRvAdapter? = null
+    private var adapter : DataRvAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -61,10 +56,6 @@ class TabFragment : MvpAppCompatFragment(), TabView {
 
     override fun updateRV() {
         adapter?.notifyDataSetChanged()
-    }
-
-    override fun goToDetails() {
-
     }
 
 }

@@ -16,7 +16,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import org.jetbrains.anko.alert
 import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.NavigatorHolder
-import ru.terrakok.cicerone.Router
 import ru.terrakok.cicerone.android.support.SupportAppNavigator
 import ru.terrakok.cicerone.commands.Command
 import javax.inject.Inject
@@ -28,9 +27,6 @@ class MainActivity : MvpAppCompatActivity(), MainView {
 
     @Inject
     lateinit var navigatorHolder : NavigatorHolder
-
-    @Inject
-    lateinit var router: Router
 
     private var navigator: Navigator = object : SupportAppNavigator(this, R.id.main_frame_layout) {
         override fun setupFragmentTransaction(command: Command?,

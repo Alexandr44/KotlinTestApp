@@ -7,8 +7,6 @@ import com.arellomobile.mvp.viewstate.strategy.StateStrategyType
 @StateStrategyType(value = AddToEndSingleStrategy::class)
 interface MainView : MvpView {
 
-    fun goToHomeScreen()
-
     fun showMessage(message: String)
 
 }

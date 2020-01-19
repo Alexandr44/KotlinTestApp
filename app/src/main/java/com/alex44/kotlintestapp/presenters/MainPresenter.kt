@@ -1,5 +1,6 @@
 package com.alex44.kotlintestapp.presenters
 
+import com.alex44.kotlintestapp.common.navigation.Screens
 import com.alex44.kotlintestapp.model.dtos.DataDTO
 import com.alex44.kotlintestapp.model.repo.IDataRepo
 import com.alex44.kotlintestapp.views.MainView
@@ -9,6 +10,7 @@ import io.reactivex.Maybe
 import io.reactivex.Scheduler
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.BiFunction
+import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
 @InjectViewState
@@ -16,6 +18,9 @@ class MainPresenter(private val mainThreadScheduler : Scheduler) : MvpPresenter<
 
     @Inject
     lateinit var repo : IDataRepo
+
+    @Inject
+    lateinit var router: Router
 
     var disposable : Disposable? = null
 
@@ -51,7 +56,7 @@ class MainPresenter(private val mainThreadScheduler : Scheduler) : MvpPresenter<
     }
 
     private fun goToHomeScreen() {
-        viewState.goToHomeScreen()
+        router.newRootScreen(Screens.HomeScreen())
     }
 
     override fun onDestroy() {
