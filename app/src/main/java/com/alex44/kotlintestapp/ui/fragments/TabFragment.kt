@@ -2,6 +2,7 @@ package com.alex44.kotlintestapp.ui.fragments
 
 
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +18,6 @@ import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import kotlinx.android.synthetic.main.fragment_tab.*
 
-
 class TabFragment : MvpAppCompatFragment(), TabView {
 
     @InjectPresenter
@@ -29,7 +29,6 @@ class TabFragment : MvpAppCompatFragment(), TabView {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-//        var data = savedInstanceState?.getSerializable("data") as ArrayList<DataDTO>?
         App.instance.appComponent.inject(this)
         // Inflate the layout for this fragment
         return inflater.inflate(com.alex44.kotlintestapp.R.layout.fragment_tab, container, false)
@@ -56,6 +55,34 @@ class TabFragment : MvpAppCompatFragment(), TabView {
 
     override fun updateRV() {
         adapter?.notifyDataSetChanged()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        saveValues(presenter.type.ordinal)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        restoreValues(presenter.type.ordinal)
+    }
+
+    private fun restoreValues(type : Int) {
+        val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+        val currentVisiblePosition = preferences?.getInt("rvPosition$type", 0)?:0
+        (data_rv?.layoutManager as? LinearLayoutManager)?.scrollToPosition(currentVisiblePosition)
+        timber.log.Timber.d("test")
+    }
+
+    private fun saveValues(type : Int) {
+        val currentVisiblePosition = (data_rv?.layoutManager as? LinearLayoutManager)?.findFirstCompletelyVisibleItemPosition()
+        if (currentVisiblePosition != null) {
+            if (currentVisiblePosition < 0) return
+        }
+        PreferenceManager.getDefaultSharedPreferences(context)
+            ?.edit()
+            ?.putInt("rvPosition$type", currentVisiblePosition?:0)
+            ?.apply()
     }
 
 }

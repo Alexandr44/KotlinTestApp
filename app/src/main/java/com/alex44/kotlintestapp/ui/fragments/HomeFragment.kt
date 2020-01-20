@@ -2,6 +2,7 @@ package com.alex44.kotlintestapp.ui.fragments
 
 
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,6 +34,7 @@ class HomeFragment : MvpAppCompatFragment(), HomeView {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        restoreValues()
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
@@ -46,6 +48,8 @@ class HomeFragment : MvpAppCompatFragment(), HomeView {
     }
 
     private fun initTabs() {
+        home_tab_layout.addTab(home_tab_layout.newTab().setText("Cats"))
+        home_tab_layout.addTab(home_tab_layout.newTab().setText("Dogs"))
         home_tab_layout.addOnTabSelectedListener(object : TabLayout.BaseOnTabSelectedListener<TabLayout.Tab> {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tab?.let {selectedTab ->
@@ -58,8 +62,8 @@ class HomeFragment : MvpAppCompatFragment(), HomeView {
             override fun onTabReselected(tab: TabLayout.Tab?) {}
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
         })
-        home_tab_layout.addTab(home_tab_layout.newTab().setText("Cats"))
-        home_tab_layout.addTab(home_tab_layout.newTab().setText("Dogs"))
+        home_tab_layout.getTabAt(tabPosition)?.select()
+        replaceTabFragment(fragments[tabPosition], false)
     }
 
     private fun initFragments() {
@@ -82,6 +86,24 @@ class HomeFragment : MvpAppCompatFragment(), HomeView {
         bundle.putSerializable("type", tabType)
         fragment.arguments = bundle
         return fragment
+    }
+
+    override fun onPause() {
+        super.onPause()
+        saveValues()
+    }
+
+    private fun restoreValues() {
+        val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+        tabPosition = preferences?.getInt("tabPosition", 0)?:0
+        timber.log.Timber.d(tabPosition.toString())
+    }
+
+    private fun saveValues() {
+        PreferenceManager.getDefaultSharedPreferences(context)
+            ?.edit()
+            ?.putInt("tabPosition", tabPosition)
+            ?.apply()
     }
 
 }

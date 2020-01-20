@@ -12,7 +12,7 @@ import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
 @InjectViewState
-class TabPresenter(private val type : TabType) : MvpPresenter<TabView>() {
+class TabPresenter(val type : TabType) : MvpPresenter<TabView>() {
 
     @Inject
     lateinit var dataRepo : IDataRepo
